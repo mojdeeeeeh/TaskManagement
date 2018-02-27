@@ -13,15 +13,16 @@ class BookController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request){
+        if ($request->ajax())
+        {
+            $books = Book::all();
+
+            return $books;
+        }
+
         return view('books.index');
     }
 
-    
-     public function bookData(){
-        $books = Book::all();
-
-        return $books;
-    }
 
     /**
      * Show the form for creating a new resource.

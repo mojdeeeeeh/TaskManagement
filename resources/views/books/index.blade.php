@@ -2,6 +2,8 @@
 <html>
 
 <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title></title>
 </head>
 
@@ -11,33 +13,32 @@
         Book List
         <div>
         	<ul>
-        		<li v-for="book in books">
+        		<li v-for="book in booksList">
         			@{{ book.title }} : @{{ book.author }}
         		</li>
         	</ul>
         </div>
     </div>
 
-    <script src="{{ asset('js/vue.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+    <script src="{{ mix('js/app.js') }}"></script>
 
     <script type="text/javascript">
 	    new Vue({
 	        el: '#app',
 
-	        mounted(){
-	        	this.loadData();
+	        data: {
+	            booksList: []
 	        },
 
-	        data: {
-	            books: []
-	        },
+            mounted(){
+                this.loadData();
+            },
 
 	        methods: {
 	        	loadData(){
-	        		axios.get('{{ url('/books/data') }}')
+	        		axios.get('{{ url('/books/') }}')
 	        			.then(res => {
-	        				this.books = res.data;
+	        				this.booksList = res.data;
 	        			})
 	        			.catch(err => {
 	        				alert(err.message);
